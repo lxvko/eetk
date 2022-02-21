@@ -48,12 +48,15 @@ def download_file(ids, names):
         print('vse norm')
         return
 
-    path = 'D:\Projects\eetk\downloads'
-    glob_path = pathlib.Path('D:\Projects\eetk\downloads')
+    path = "/home/ubuntu/eetk/downloads/"
+    glob_path = pathlib.Path("/home/ubuntu/eetk/downloads/")
     options = webdriver.ChromeOptions()
     prefs = {"download.default_directory": f'{path}'}
     options.add_experimental_option("prefs", prefs)
-    driver = webdriver.Chrome(options=options)
+    options.add_argument('--headless')
+    options.headless = True
+    driver = webdriver.Chrome(executable_path="/home/ubuntu/eetk/chromedriver.exe",
+                              options=options)
 
     for id in ids:
         counter += 1
