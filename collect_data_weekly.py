@@ -49,14 +49,13 @@ def download_file(ids, names):
 
     path = "/home/ubuntu/eetk/downloads/"
     glob_path = pathlib.Path("/home/ubuntu/eetk/downloads/")
-    options = webdriver.ChromeOptions()
-    prefs = {"download.default_directory": f'{path}'}
-    options.add_experimental_option("prefs", prefs)
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.headless = True
-    driver = webdriver.Chrome(executable_path="/home/ubuntu/eetk/chromedriver",
-                              options=options)
+
+    profile = webdriver.FirefoxOptions()
+    profile.set_preference("browser.download.folderList", 2)
+    profile.set_preference("browser.download.manager.showWhenStarting", False)
+    profile.set_preference("browser.download.dir", path)
+    profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/x-gzip")
+    driver = webdriver.Firefox(profile)
 
     for id in ids:
         try:

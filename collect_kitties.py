@@ -1,5 +1,5 @@
 import random
-import json  # json for pretty output
+import json
 import requests
 from serpapi import GoogleSearch
 
