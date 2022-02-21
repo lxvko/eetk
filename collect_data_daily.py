@@ -54,8 +54,9 @@ def download_file(ids, names):
     prefs = {"download.default_directory": f'{path}'}
     options.add_experimental_option("prefs", prefs)
     options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
     options.headless = True
-    driver = webdriver.Chrome(executable_path="/home/ubuntu/eetk/chromedriver.exe",
+    driver = webdriver.Chrome(executable_path="/home/ubuntu/eetk/chromedriver",
                               options=options)
 
     for id in ids:
