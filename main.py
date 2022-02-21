@@ -108,7 +108,7 @@ def send_message(message):
 
 # 760196701 author
 # 825248757 nikita
-
+# 527166167 someone
 
 if __name__ == '__main__':
     collect_data()
