@@ -72,6 +72,9 @@ def download_file(ids, names):
                 for i, path in enumerate(glob_path.glob('*.pdf')):
                     new_name = id.rpartition('/')[-1] + '.pdf'
                     path.rename(f'pdfs/{new_name}')
+                for i, path in enumerate(glob_path.glob('*.jpg')):
+                    new_name = id.rpartition('/')[-1] + '.jpg'
+                    path.rename(f'pdfs/{new_name}')
             except:
                 driver.quit()
 

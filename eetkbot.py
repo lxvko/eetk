@@ -108,9 +108,15 @@ async def get_data_daily(message: types.Message):
         counter += 1
         if 'cloud.mail.ru' in change:
             part = changes[counter].rpartition('/')[-1]
-            await message.answer_document(
-                open(f'pdfs/{part}.pdf', 'rb'),
-                caption=f'{changes_names[counter]}')
+            try:
+                await message.answer_document(
+                    open(f'pdfs/{part}.pdf', 'rb'),
+                    caption=f'{changes_names[counter]}')
+                await message.answer_photo(
+                    open(f'pdfs/{part}.jpg', 'rb'),
+                    caption=f'{changes_names[counter]}')
+            except:
+                pass
         else:
             await message.answer_document(
                 open(f'pdfs/{changes_names[counter]}.pdf', 'rb'),
