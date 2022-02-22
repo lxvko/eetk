@@ -26,16 +26,16 @@ def get_kitty(kitties):
     for i in reversed(range(len(kitties))):
         if \
                 kitties_work[i]['source'] == 'm.facebook.com' \
-                        or kitties_work[i]['source'] == 'facebook.com' \
-                        or kitties_work[i]['source'] == 'ont.by' \
-                        or kitties_work[i]['source'] == 'novosti-n.org' \
-                        or kitties_work[i]['source'] == 'ysia.ru' \
-                        or kitties_work[i]['source'] == 'krasivosti.pro' \
-                        or kitties_work[i]['source'] == 'mover.uz' \
-                        or kitties_work[i]['source'] == 'cultmall.com.ua · In stock' \
-                        or kitties_work[i]['source'] == 'mariart.kiev.ua · In stock' \
-                        or kitties_work[i]['source'] == 'pets.24tv.ua' \
-                        or kitties_work[i]['source'] == 'stickers.wiki':
+                or kitties_work[i]['source'] == 'facebook.com' \
+                or kitties_work[i]['source'] == 'ont.by' \
+                or kitties_work[i]['source'] == 'novosti-n.org' \
+                or kitties_work[i]['source'] == 'ysia.ru' \
+                or kitties_work[i]['source'] == 'krasivosti.pro' \
+                or kitties_work[i]['source'] == 'mover.uz' \
+                or kitties_work[i]['source'] == 'cultmall.com.ua · In stock' \
+                or kitties_work[i]['source'] == 'mariart.kiev.ua · In stock' \
+                or kitties_work[i]['source'] == 'pets.24tv.ua' \
+                or kitties_work[i]['source'] == 'stickers.wiki':
             del kitties_work[i]
     for i in range(len(kitties_work)):
         counter.append(kitties_work[i]['position'])

@@ -2,9 +2,9 @@ import pathlib
 import time
 import os
 import os.path
+import requests
 
 from fake_useragent import UserAgent
-import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -47,15 +47,19 @@ def download_file(ids, names):
         print('vse norm')
         return
 
-    path = "/home/ubuntu/eetk/downloads/"
-    glob_path = pathlib.Path("/home/ubuntu/eetk/downloads/")
+    path = "/app/downloads/"
+    glob_path = pathlib.Path("/app/downloads/")
 
-    profile = webdriver.FirefoxOptions()
-    profile.set_preference("browser.download.folderList", 2)
-    profile.set_preference("browser.download.manager.showWhenStarting", False)
-    profile.set_preference("browser.download.dir", path)
-    profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/x-gzip")
-    driver = webdriver.Firefox(profile)
+    options = webdriver.ChromeOptions()
+    prefs = {"download.default_directory": f'{path}'}
+    options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+    options.add_experimental_option("prefs", prefs)
+    options.add_argument('--headless')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--no-sandbox')
+    options.headless = True
+    driver = webdriver.Chrome(executable_path=os.environ.get('CHROMEDRIVER_PATH'),
+                              options=options)
 
     for id in ids:
         try:
