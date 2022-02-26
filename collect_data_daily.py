@@ -1,13 +1,7 @@
-import os
-import os.path
-import pathlib
-import time
+# -*- coding: utf-8 -*-
 import requests
-
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 
 ua = UserAgent()
 
@@ -40,52 +34,41 @@ def collect_data_daily():
 
 
 def download_file(ids, names):
-    check_file = []
     counter = -1
-    for i in range(len(names)):
-        check_file.append(os.path.exists(f'pdfs/{ids[i].rpartition("/")[-1]}.pdf'))
-    if all(check_file):
-        print('vse norm')
-        return
-
-    path = "/app/downloads/"
-    glob_path = pathlib.Path("/app/downloads/")
-
-    options = webdriver.ChromeOptions()
-    prefs = {"download.default_directory": f'{path}'}
-    options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
-    options.add_experimental_option("prefs", prefs)
-    options.add_argument('--headless')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--no-sandbox')
-    options.headless = True
-    driver = webdriver.Chrome(executable_path=os.environ.get('CHROMEDRIVER_PATH'),
-                              options=options)
-
+    temp_formats = []
     for id in ids:
         counter += 1
         if 'cloud.mail.ru' in id:
             try:
-                driver.get(f'{id}')
-                driver.find_element(By.XPATH, '//div [@data-qa-id="download"]').click()
-                time.sleep(2)
-                for i, path in enumerate(glob_path.glob('*.pdf')):
-                    new_name = id.rpartition('/')[-1] + '.pdf'
-                    path.rename(f'pdfs/{new_name}')
-                for i, path in enumerate(glob_path.glob('*.jpg')):
-                    new_name = id.rpartition('/')[-1] + '.jpg'
-                    path.rename(f'pdfs/{new_name}')
-            except:
-                driver.quit()
+                part = id.rpartition('public/')[-1]
+                name = id.rpartition('/')[-1]
+                temp = requests.get(id)
 
+                with open('texts/temp.txt', 'wb') as file:
+                    file.write(temp.content)
+                with open('texts/temp.txt', 'r', encoding='utf-8') as file:
+                    temp = file.read()
+
+                magic_format = temp.rpartition('"virus_scan": "pass",')[2].rpartition('"size":')[0]
+                magic_format = magic_format.rpartition('"name": "')[2].rpartition('.')[2].rpartition('"')[0]
+                temp_formats.append(magic_format)
+
+                magic = temp.rpartition('"weblink_get"')[2].rpartition('"stock":')[0]
+                magic = magic.rpartition('"url": "')[2].rpartition('"\n')[0] + f'/{part}'
+                pdf = requests.get(magic)
+
+                with open(f'pdfs/{name}.{magic_format}', 'wb') as f:
+                    f.write(pdf.content)
+            except:
+                print(f'Не удалось скачать файл {id}')
         else:
             response = requests.get(id)
-            with open(file=f'pdfs/{names[counter]}.pdf', mode='wb') as file:
+            temp_formats.append('pdf')
+            with open(f'pdfs/{names[counter]}.pdf', 'wb') as file:
                 file.write(response.content)
-
-    files = glob_path.glob('*.pdf')
-    for f in files:
-        os.remove(f)
+    with open('texts/temp_formats.txt', 'w') as file:
+        for item in temp_formats:
+            print(item, file=file)
 
 
 def main():
