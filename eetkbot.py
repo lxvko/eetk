@@ -7,7 +7,7 @@ from collect_data_daily import collect_data_daily
 from collect_kitties import collect_kitty
 import asyncio
 
-bot = Bot(token='5085326595:AAFI3xs2njh8QS_Ymz_Mc0m8kvNSw0i8LRc', parse_mode=types.ParseMode.HTML)
+bot = Bot(token='5068878742:AAEB6rC4kEmngswkQS6n31fAVR3szf7NshE', parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(bot)
 
 
