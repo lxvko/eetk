@@ -1,6 +1,7 @@
 import requests
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
+import os
 
 ua = UserAgent()
 
@@ -24,7 +25,8 @@ def collect_data_weekly(course):
     elif course == 4:
         schedules = soup.find_all("tr", class_="row-4 even")
 
-    schedules_names = soup.find_all("article", class_="post-88 page type-page status-publish hentry")
+    schedules_names = soup.find_all(
+        "article", class_="post-88 page type-page status-publish hentry")
 
     for schedule in schedules:
         data_weekly += [link.get("href") for link in schedule.find_all("a")]
@@ -43,15 +45,13 @@ def collect_data_weekly(course):
 
 def download_file(ids):
     for id in ids:
-
+        
         part = id.rpartition('public/')[-1]
         name = id.rpartition('/')[-1]
+        if os.path.isfile(f'pdfs/{name}.pdf'):
+            continue
         temp = requests.get(id)
-
-        with open('texts/temp.txt', 'wb') as file:
-            file.write(temp.content)
-        with open('texts/temp.txt', 'r', encoding='utf-8') as file:
-            temp = file.read()
+        temp = temp.text
 
         magic = temp.rpartition('"weblink_get"')[2].rpartition('"stock":')[0]
         magic = magic.rpartition('"url": "')[2].rpartition('"\n')[0] + f'/{part}'

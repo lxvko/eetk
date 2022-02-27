@@ -35,7 +35,6 @@ async def comeback(message: types.Message):
     await message.answer('Выбери нужный курс', reply_markup=keyboard)
 
 
-
 @dp.message_handler(commands=['join'])
 async def join(message: types.Message):
     current_user_id = message.from_user.id
@@ -117,8 +116,7 @@ async def fourth_course_is_selected(message: types.Message):
 
 @dp.message_handler(Text(equals='Расписание первого курса'))
 async def get_data_weekly_first(message: types.Message):
-    msg = await message.answer('Загрузка. Подожди, пожалуйста 🙃')
-    asyncio.create_task(delete_message(msg, 2))
+    await message.answer('Загрузка. Подожди, пожалуйста 🙃')
 
     collect_data_weekly(1)
     with open('texts/schedules.txt') as file:
@@ -131,12 +129,12 @@ async def get_data_weekly_first(message: types.Message):
         await message.answer_document(
             open(f'pdfs/{part}.pdf', 'rb'),
             caption=f'{schedule_name[i]}')
+        await asyncio.sleep(0.5)
 
 
 @dp.message_handler(Text(equals='Расписание второго курса'))
 async def get_data_weekly_second(message: types.Message):
-    msg = await message.answer('Загрузка. Подожди, пожалуйста 🙃')
-    asyncio.create_task(delete_message(msg, 2))
+    await message.answer('Загрузка. Подожди, пожалуйста 🙃')
 
     collect_data_weekly(2)
     with open('texts/schedules.txt') as file:
@@ -149,12 +147,12 @@ async def get_data_weekly_second(message: types.Message):
         await message.answer_document(
             open(f'pdfs/{part}.pdf', 'rb'),
             caption=f'{schedule_name[i]}')
+        await asyncio.sleep(0.5)
 
 
 @dp.message_handler(Text(equals='Расписание третьего курса'))
 async def get_data_weekly_third(message: types.Message):
-    msg = await message.answer('Загрузка. Подожди, пожалуйста 🙃')
-    asyncio.create_task(delete_message(msg, 2))
+    await message.answer('Загрузка. Подожди, пожалуйста 🙃')
 
     collect_data_weekly(3)
     with open('texts/schedules.txt') as file:
@@ -167,12 +165,12 @@ async def get_data_weekly_third(message: types.Message):
         await message.answer_document(
             open(f'pdfs/{part}.pdf', 'rb'),
             caption=f'{schedule_name[i]}')
+        await asyncio.sleep(0.5)
 
 
 @dp.message_handler(Text(equals='Расписание четвертого курса'))
 async def get_data_weekly_fourth(message: types.Message):
-    msg = await message.answer('Загрузка. Подожди, пожалуйста 🙃')
-    asyncio.create_task(delete_message(msg, 2))
+    await message.answer('Загрузка. Подожди, пожалуйста 🙃')
 
     collect_data_weekly(4)
     with open('texts/schedules.txt') as file:
@@ -185,12 +183,12 @@ async def get_data_weekly_fourth(message: types.Message):
         await message.answer_document(
             open(f'pdfs/{part}.pdf', 'rb'),
             caption=f'{schedule_name[i]}')
+        await asyncio.sleep(0.5)
 
 
 @dp.message_handler(Text(equals='Изменения'))
 async def get_data_daily(message: types.Message):
-    msg = await message.answer('Загрузка. Подожди, пожалуйста 🙃')
-    asyncio.create_task(delete_message(msg, 2))
+    await message.answer('Загрузка. Подожди, пожалуйста 🙃')
 
     collect_data_daily()
     with open('texts/changes.txt') as file:
@@ -203,6 +201,7 @@ async def get_data_daily(message: types.Message):
     counter = -1
     for change in changes:
         counter += 1
+        await asyncio.sleep(0.5)
         if 'cloud.mail.ru' in change:
             part = changes[counter].rpartition('/')[-1]
             if temp_formats[counter] == 'pdf':
@@ -228,12 +227,6 @@ async def get_kitty(message: types.Message):
     collect_kitty()
     await message.answer_photo(
         open('cats/kitty.jpg', 'rb'))
-
-
-async def delete_message(message: types.Message, sleep_time: int = 0):
-    await asyncio.sleep(sleep_time)
-    with suppress(MessageCantBeDeleted, MessageToDeleteNotFound):
-        await message.delete()
 
 
 def main():

@@ -2,6 +2,7 @@
 import requests
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
+import os
 
 ua = UserAgent()
 
@@ -15,7 +16,8 @@ def collect_data_daily():
         headers={'user-agent': f'{ua.random}'})
 
     soup = BeautifulSoup(r.text, "lxml")
-    changes = soup.find_all("article", class_="post-3115 page type-page status-publish hentry")
+    changes = soup.find_all(
+        "article", class_="post-3115 page type-page status-publish hentry")
     changes_names = changes
 
     for change in changes:
@@ -42,16 +44,18 @@ def download_file(ids, names):
             try:
                 part = id.rpartition('public/')[-1]
                 name = id.rpartition('/')[-1]
+                
                 temp = requests.get(id)
-
-                with open('texts/temp.txt', 'wb') as file:
-                    file.write(temp.content)
-                with open('texts/temp.txt', 'r', encoding='utf-8') as file:
-                    temp = file.read()
+                temp = temp.text
 
                 magic_format = temp.rpartition('"virus_scan": "pass",')[2].rpartition('"size":')[0]
                 magic_format = magic_format.rpartition('"name": "')[2].rpartition('.')[2].rpartition('"')[0]
                 temp_formats.append(magic_format)
+
+                if os.path.isfile(f'pdfs/{name}.pdf'):
+                    continue
+                elif os.path.isfile(f'pdfs/{name}.jpg'):
+                    continue
 
                 magic = temp.rpartition('"weblink_get"')[2].rpartition('"stock":')[0]
                 magic = magic.rpartition('"url": "')[2].rpartition('"\n')[0] + f'/{part}'
@@ -62,6 +66,9 @@ def download_file(ids, names):
             except:
                 print(f'Не удалось скачать файл {id}')
         else:
+            if os.path.isfile(f'pdfs/{names[counter]}.pdf'):
+                continue
+
             response = requests.get(id)
             temp_formats.append('pdf')
             with open(f'pdfs/{names[counter]}.pdf', 'wb') as file:
