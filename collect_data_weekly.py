@@ -45,7 +45,7 @@ def collect_data_weekly(course):
 
 def download_file(ids):
     for id in ids:
-        
+
         part = id.rpartition('public/')[-1]
         name = id.rpartition('/')[-1]
         if os.path.isfile(f'pdfs/{name}.pdf'):
