@@ -44,7 +44,7 @@ def download_file(ids, names):
             try:
                 part = id.rpartition('public/')[-1]
                 name = id.rpartition('/')[-1]
-                
+
                 temp = requests.get(id)
                 temp = temp.text
 
