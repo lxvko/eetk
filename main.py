@@ -42,30 +42,60 @@ def collect_data():
 def collect_result():
     while True:
 
-        time.sleep(30)
+        time.sleep(40)
 
         # Weekly check
         global result_weekly
         result_weekly.clear()
 
-        r = requests.get(
-            url='http://eetk.ru/78-2/82-2/88-2/',
-            headers={'user-agent': f'{ua.random}'})
+        try:
+            r = requests.get(
+                url='http://eetk.ru/78-2/82-2/88-2/',
+                headers={'user-agent': f'{ua.random}'})
+        except requests.ConnectionError as e:
+            print(str(e))
+            time.sleep(60)
+            continue
+        except requests.Timeout as e:
+            print(str(e))
+            time.sleep(60)
+            continue
+        except requests.RequestException as e:
+            print(str(e))
+            time.sleep(60)
+            continue
+        except KeyboardInterrupt:
+            print("Something closed the program")
 
         soup = BeautifulSoup(r.text, "lxml")
         schedules = soup.find_all("tr", class_="row-4 even")
         for schedule in schedules:
             result_weekly += [link.get("href") for link in schedule.find_all("a")]
 
-        time.sleep(30)
+        time.sleep(40)
 
         # Daily check
         global result_daily
         result_daily.clear()
 
-        r = requests.get(
-            url='http://eetk.ru/78-2/2953-2/3115-2/',
-            headers={'user-agent': f'{ua.random}'})
+        try:
+            r = requests.get(
+                url='http://eetk.ru/78-2/2953-2/3115-2/',
+                headers={'user-agent': f'{ua.random}'})
+        except requests.ConnectionError as e:
+            print(str(e))
+            time.sleep(60)
+            continue
+        except requests.Timeout as e:
+            print(str(e))
+            time.sleep(60)
+            continue
+        except requests.RequestException as e:
+            print(str(e))
+            time.sleep(60)
+            continue
+        except KeyboardInterrupt:
+            print("Something closed the program")
 
         soup = BeautifulSoup(r.text, "lxml")
         changes = soup.find_all("article", class_="post-3115 page type-page status-publish hentry")
@@ -102,6 +132,7 @@ def send_message(message):
         user_id = [line.strip() for line in file]
 
     for req in range(len(user_id)):
+        time.sleep(1)
         r = requests.get(f'https://api.telegram.org/{token}/sendMessage'
                          f'?chat_id={user_id[req]}&text={message}')
 
