@@ -1,24 +1,21 @@
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
-from aiogram.utils.exceptions import (MessageCantBeDeleted, MessageToDeleteNotFound)
-from contextlib import suppress
 from collect_data_weekly import collect_data_weekly
 from collect_data_daily import collect_data_daily
 from collect_kitties import collect_kitty
 import asyncio
 
-bot = Bot(token='5068878742:AAEB6rC4kEmngswkQS6n31fAVR3szf7NshE', parse_mode=types.ParseMode.HTML)
+bot = Bot(token='5085326595:AAGVsDbtRcsj4at6haoV10d5_vSnBoaeNqg', parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(bot)
 
 
 # 5068878742:AAEB6rC4kEmngswkQS6n31fAVR3szf7NshE glavniy
-# 5085326595:AAFI3xs2njh8QS_Ymz_Mc0m8kvNSw0i8LRc testoviy
+# 5085326595:AAGVsDbtRcsj4at6haoV10d5_vSnBoaeNqg testoviy
 
 # 760196701 author
 
 @dp.message_handler(commands='start')
 async def start(message: types.Message):
-    # start_buttons = ['Расписание', 'Изменения', 'Милый котик']
     start_buttons = ['Первый курс', 'Второй курс', 'Третий курс', 'Четвертый курс']
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     for start_button in start_buttons:
@@ -76,6 +73,21 @@ async def spisok(message: types.Message):
 
     for i in range(len(user_id)):
         await message.answer(f'{user_id[i]}')
+
+
+@dp.message_handler(commands=['preload'])
+async def spisok(message: types.Message):
+    await message.answer('Загрузка. Подожди, пожалуйста 🙃')
+
+    collect_data_daily()
+    course = 1
+    for course in range(1, 5):
+        await asyncio.sleep(2)
+        try:
+            collect_data_weekly(course)
+            await message.answer(f'{course} курс успешно загружен 🙃')
+        except:
+            await message.answer(f'Ой, что-то сломалось с {course} курсом :(')
 
 
 @dp.message_handler(Text(equals='Первый курс'))
