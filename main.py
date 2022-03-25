@@ -1,7 +1,11 @@
 from fake_useragent import UserAgent
+from collect_data_weekly import collect_data_weekly
+from collect_data_daily import collect_data_daily
 import requests
 from bs4 import BeautifulSoup
 import time
+import os
+import glob
 
 data_weekly = []
 data_daily = []
@@ -116,11 +120,13 @@ def check(check_data):
         time.sleep(30)
         if data_weekly != result_weekly:
             send_message('На сайте выложили новое расписание!')
+            reload_data()
             collect_data()
     elif check_data == result_daily:
         time.sleep(30)
         if data_daily != result_daily:
             send_message('На сайте появились изменения!')
+            reload_data()
             collect_data()
 
 
@@ -137,9 +143,23 @@ def send_message(message):
                          f'?chat_id={user_id[req]}&text={message}')
 
 
+def reload_data():
+    for file in glob.glob('pdfs/*'):
+        os.remove(file)
+
+    collect_data_daily()
+
+    course = 1
+    for course in range(1, 5):
+        time.sleep(2)
+        try:
+            collect_data_weekly(course)
+        except:
+            pass
+
+
 # 760196701 author
 # 825248757 nikita
-# 527166167 someone
 
 if __name__ == '__main__':
     collect_data()

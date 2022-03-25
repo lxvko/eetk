@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from fake_useragent import UserAgent
+from urllib.parse import urlencode
 from bs4 import BeautifulSoup
 import os
 
@@ -47,8 +48,8 @@ def download_file(ids, names):
 
                 temp = requests.get(id)
                 temp = temp.text
-
-                magic_format = temp.rpartition('"virus_scan": "pass",')[2].rpartition('"size":')[0]
+                
+                magic_format = temp.rpartition('"serverSideFolders":')[2].rpartition('"weblink":')[0]
                 magic_format = magic_format.rpartition('"name": "')[2].rpartition('.')[2].rpartition('"')[0]
                 temp_formats.append(magic_format)
 
@@ -57,12 +58,30 @@ def download_file(ids, names):
                 elif os.path.isfile(f'pdfs/{name}.jpg'):
                     continue
 
-                magic = temp.rpartition('"weblink_get"')[2].rpartition('"stock":')[0]
+                magic = temp.rpartition('"weblink_get"')[2].rpartition('"weblink_thumbnails":')[0]
                 magic = magic.rpartition('"url": "')[2].rpartition('"\n')[0] + f'/{part}'
                 pdf = requests.get(magic)
 
                 with open(f'pdfs/{name}.{magic_format}', 'wb') as f:
                     f.write(pdf.content)
+            except:
+                print(f'Не удалось скачать файл {id}')
+        elif 'disk.yandex.ru' in id:
+            try:
+                base_url = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?'
+                final_url = base_url + urlencode(dict(public_key=id))
+                response = requests.get(final_url)
+                download_url = response.json()['href']
+                name = (download_url.split('&filename='))[1].split('&disposition')[0]
+
+                if os.path.isfile(f'pdfs/{name}.pdf'):
+                    continue
+                elif os.path.isfile(f'pdfs/{name}.jpg'):
+                    continue
+
+                download_response = requests.get(download_url)
+                with open(f'pdfs/{name}', 'wb') as f:
+                    f.write(download_response.content)
             except:
                 print(f'Не удалось скачать файл {id}')
         else:
@@ -71,8 +90,8 @@ def download_file(ids, names):
 
             response = requests.get(id)
             temp_formats.append('pdf')
-            with open(f'pdfs/{names[counter]}.pdf', 'wb') as file:
-                file.write(response.content)
+            with open(f'pdfs/{names[counter]}.pdf', 'wb') as f:
+                f.write(response.content)
     with open('texts/temp_formats.txt', 'w') as file:
         for item in temp_formats:
             print(item, file=file)

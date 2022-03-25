@@ -53,7 +53,7 @@ def download_file(ids):
         temp = requests.get(id)
         temp = temp.text
 
-        magic = temp.rpartition('"weblink_get"')[2].rpartition('"stock":')[0]
+        magic = temp.rpartition('"weblink_get"')[2].rpartition('"weblink_thumbnails":')[0]
         magic = magic.rpartition('"url": "')[2].rpartition('"\n')[0] + f'/{part}'
         pdf = requests.get(magic)
         with open(f'pdfs/{name}.pdf', 'wb') as f:

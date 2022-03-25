@@ -4,6 +4,8 @@ from collect_data_weekly import collect_data_weekly
 from collect_data_daily import collect_data_daily
 from collect_kitties import collect_kitty
 import asyncio
+import os
+import glob
 
 bot = Bot(token='5085326595:AAGVsDbtRcsj4at6haoV10d5_vSnBoaeNqg', parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(bot)
@@ -78,6 +80,9 @@ async def spisok(message: types.Message):
 @dp.message_handler(commands=['preload'])
 async def spisok(message: types.Message):
     await message.answer('Загрузка. Подожди, пожалуйста 🙃')
+
+    for file in glob.glob('pdfs/*'):
+        os.remove(file)
 
     collect_data_daily()
     course = 1
