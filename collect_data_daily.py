@@ -50,7 +50,7 @@ def download_file(ids, names):
                 temp = temp.text
                 
                 magic_format = temp.rpartition('"serverSideFolders":')[2].rpartition('"weblink":')[0]
-                magic_format = magic_format.rpartition('"name": "')[2].rpartition('.')[2].rpartition('"')[0]
+                magic_format = magic_format.rpartition('"name": "')[2].rpartition('.')[2].rpartition('",\n\t\t\t\t\t"s')[0]
                 temp_formats.append(magic_format)
 
                 if os.path.isfile(f'pdfs/{name}.pdf'):
@@ -58,7 +58,7 @@ def download_file(ids, names):
                 elif os.path.isfile(f'pdfs/{name}.jpg'):
                     continue
 
-                magic = temp.rpartition('"weblink_get"')[2].rpartition('"weblink_thumbnails":')[0]
+                magic = temp.rpartition('"weblink_get"')[2].rpartition('"stock":')[0]
                 magic = magic.rpartition('"url": "')[2].rpartition('"\n')[0] + f'/{part}'
                 pdf = requests.get(magic)
 

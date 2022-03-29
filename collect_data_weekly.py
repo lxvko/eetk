@@ -54,7 +54,7 @@ def download_file(ids):
         temp = temp.text
 
         magic = temp.rpartition('"weblink_get"')[2].rpartition('"weblink_thumbnails":')[0]
-        magic = magic.rpartition('"url": "')[2].rpartition('"\n')[0] + f'/{part}'
+        magic = magic.partition('"url": "')[2].partition('no"')[0] + f'no/{part}'
         pdf = requests.get(magic)
         with open(f'pdfs/{name}.pdf', 'wb') as f:
             f.write(pdf.content)
