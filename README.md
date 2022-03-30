@@ -87,6 +87,6 @@ UnicodeEncodeError: 'latin-1' codec can't encode characters in position 0-7: ord
 ```
 Такая ошибка означает, что в вашем VDS не установлена RU локализация, которая необходима для работы.
 
-Решение здесь: https://qna.habr.com/q/684410, плюсом к этому нужно прописать в рабочем экране ***LANG=ru_RU.UTF***
+Решение здесь: https://qna.habr.com/q/684410 (комментарий @CopsisOnFire), плюсом к этому нужно прописать в рабочем экране ***LANG=ru_RU.UTF***
 
 
