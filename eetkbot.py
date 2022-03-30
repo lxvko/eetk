@@ -1,4 +1,3 @@
-
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
 from collect_data_weekly import collect_data_weekly

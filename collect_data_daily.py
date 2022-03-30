@@ -61,13 +61,6 @@ def download_file(ids, names):
                 part = id.rpartition('public/')[-1]  # Кусок будущей ссылки для скачивания
                 name = id.rpartition('/')[-1]  # Будущее имя файла
 
-                # Если файл уже скачан, то еще раз он качаться не будет
-                if os.path.isfile(f'pdfs/{name}.pdf'):
-                    continue
-                # Проверка на jpg формат.. :/ Были случаи..
-                elif os.path.isfile(f'pdfs/{name}.jpg'):
-                    continue
-
                 # Парсим сайт cloud.mail.ru
                 temp = requests.get(id)
                 temp = temp.text
@@ -79,6 +72,13 @@ def download_file(ids, names):
                 # Магическим образом достаем ссылку для скачивания
                 magic_link = Link.parse_raw(temp.partition('"weblink_get": ')[2].partition(',\n\t\t"')[0])
                 pdf = requests.get(magic_link.url + f'/{part}')
+
+                # Если файл уже скачан, то еще раз он качаться не будет
+                if os.path.isfile(f'pdfs/{name}.pdf'):
+                    continue
+                # Проверка на jpg формат.. :/ Были случаи..
+                elif os.path.isfile(f'pdfs/{name}.jpg'):
+                    continue
 
                 # Скачиваем нужный нам pdf-файл
                 with open(f'pdfs/{name}.{temp_formats[-1]}', 'wb') as f:
@@ -99,7 +99,7 @@ def download_file(ids, names):
                 # Обращаемся к API сайта
                 response = requests.get(final_url)
                 download_url = response.json()['href']  # Вытаскиваем ссылку на скачивание pdf-файла
-                name = (download_url.split('&filename='))[1].split('&disposition')[0]  # Вытаскиваем имя ,будущего файла
+                name = (download_url.split('&filename='))[1].split('&disposition')[0]  # Вытаскиваем имя будущего файла
                 temp_formats.append(name.split('.')[-1])
 
                 # Если файл уже скачан, то еще раз он качаться не будет
@@ -120,7 +120,7 @@ def download_file(ids, names):
             # Если файл уже скачан, то еще раз он качаться не будет
             if os.path.isfile(f'pdfs/{names[counter]}.pdf'):
                 continue
-            
+
             # Скачиваем нужный нам pdf-файл
             response = requests.get(id)
             temp_formats.append('pdf')
@@ -128,9 +128,10 @@ def download_file(ids, names):
                 f.write(response.content)
 
     # Ведем запись форматов, которые сейчас находятся в папке, для корректной работы ТГ-бота
-    with open('texts/temp_formats.txt', 'w') as file:
-        for item in temp_formats:
-            print(item, file=file)
+    if temp_formats:
+        with open('texts/temp_formats.txt', 'w') as file:
+            for item in temp_formats:
+                print(item, file=file)
 
 
 def main():
