@@ -66,7 +66,7 @@ def download_file(ids, names):
                 temp = temp.text
 
                 # Магическим образом достаем формат будущего файла
-                magic_format = Format.parse_raw(temp.partition('"list": [\n')[2].partition(']')[0])
+                magic_format = Format.parse_raw(temp.partition('"folders":')[2].partition('\n}')[0])
                 temp_formats.append(magic_format.name.split('.')[-1])
 
                 # Магическим образом достаем ссылку для скачивания
