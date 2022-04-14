@@ -9,12 +9,9 @@ import os
 
 
 # Вводим токен нашего бота
-bot = Bot(token='5085326595:AAGVsDbtRcsj4at6haoV10d5_vSnBoaeNqg', parse_mode=types.ParseMode.HTML)
+bot = Bot(token='', parse_mode=types.ParseMode.HTML)
 dp = Dispatcher(bot)
 
-
-# 5068878742:AAHeLzjo7WNXb_siW9YVQTKpfae3R6wKHIg Токен главного бота
-# 5085326595:AAGVsDbtRcsj4at6haoV10d5_vSnBoaeNqg Токен тестового бота
 
 # 760196701 Это я)) @lxvko
 

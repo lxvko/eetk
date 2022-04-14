@@ -16,13 +16,8 @@ user_id = []
 # Формирование фейкового юзер-агента, чтобы сайт не блочил доступ при частых запросах
 ua = UserAgent()
 
-# Вводим токен нашего бота с припиской bot
-token = 'bot5085326595:AAGVsDbtRcsj4at6haoV10d5_vSnBoaeNqg'
-
-# 5068878742:AAHeLzjo7WNXb_siW9YVQTKpfae3R6wKHIg Токен главного бота
-# 5085326595:AAGVsDbtRcsj4at6haoV10d5_vSnBoaeNqg Токен тестового бота
-
-# 760196701 Это я)) @lxvko
+# Вводим токен нашего бота
+token = ''
 
 
 # Собираем актуальные данные для использования в качестве оригинала
@@ -185,7 +180,7 @@ def send_message(message):
     # Отправляем каждому пользователю по очереди сообщение с нужным текстом
     for req in range(len(user_id)):
         time.sleep(1)
-        r = requests.get(f'https://api.telegram.org/{token}/sendMessage'
+        r = requests.get(f'https://api.telegram.org/bot{token}/sendMessage'
                          f'?chat_id={user_id[req]}&text={message}')
 
 
