@@ -96,8 +96,7 @@ async def spisok(message: types.Message):
     with open('user_id.txt') as file:
         user_id = [line.strip() for line in file]
 
-    for i in range(len(user_id)):
-        await message.answer(f'{user_id[i]}')
+    await message.answer(f'{len(user_id)}')
 
 
 # Обработчик секретной команды "/preload"
