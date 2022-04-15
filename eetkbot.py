@@ -170,11 +170,16 @@ async def get_data_weekly_first(message: types.Message):
 
     # Отправляем файлы пользователю
     for i in range(len(schedule)):
-        part = schedule[i].rpartition('/')[-1]
-        await message.answer_document(
-            open(f'pdfs/{part}.pdf', 'rb'),
-            caption=f'{schedule_name[i]}')
-        await asyncio.sleep(0.5)
+        if 'cloud.mail.ru' in schedule[i]:
+            part = schedule[i].rpartition('/')[-1]
+            await message.answer_document(
+                open(f'pdfs/{part}.pdf', 'rb'),
+                caption=f'{schedule_name[i]}')
+        else:
+            name = schedule[i].rpartition('/')[-1]
+            await message.answer_document(
+                open(f'pdfs/{name}', 'rb'),
+                caption=f'{schedule_name[i]}')
 
 
 @dp.message_handler(Text(equals='Расписание второго курса'))
@@ -188,11 +193,16 @@ async def get_data_weekly_second(message: types.Message):
         schedule_name = [line.strip() for line in file]
 
     for i in range(len(schedule)):
-        part = schedule[i].rpartition('/')[-1]
-        await message.answer_document(
-            open(f'pdfs/{part}.pdf', 'rb'),
-            caption=f'{schedule_name[i]}')
-        await asyncio.sleep(0.5)
+        if 'cloud.mail.ru' in schedule[i]:
+            part = schedule[i].rpartition('/')[-1]
+            await message.answer_document(
+                open(f'pdfs/{part}.pdf', 'rb'),
+                caption=f'{schedule_name[i]}')
+        else:
+            name = schedule[i].rpartition('/')[-1]
+            await message.answer_document(
+                open(f'pdfs/{name}', 'rb'),
+                caption=f'{schedule_name[i]}')
 
 
 @dp.message_handler(Text(equals='Расписание третьего курса'))
@@ -206,11 +216,16 @@ async def get_data_weekly_third(message: types.Message):
         schedule_name = [line.strip() for line in file]
 
     for i in range(len(schedule)):
-        part = schedule[i].rpartition('/')[-1]
-        await message.answer_document(
-            open(f'pdfs/{part}.pdf', 'rb'),
-            caption=f'{schedule_name[i]}')
-        await asyncio.sleep(0.5)
+        if 'cloud.mail.ru' in schedule[i]:
+            part = schedule[i].rpartition('/')[-1]
+            await message.answer_document(
+                open(f'pdfs/{part}.pdf', 'rb'),
+                caption=f'{schedule_name[i]}')
+        else:
+            name = schedule[i].rpartition('/')[-1]
+            await message.answer_document(
+                open(f'pdfs/{name}', 'rb'),
+                caption=f'{schedule_name[i]}')
 
 
 @dp.message_handler(Text(equals='Расписание четвертого курса'))
@@ -224,11 +239,16 @@ async def get_data_weekly_fourth(message: types.Message):
         schedule_name = [line.strip() for line in file]
 
     for i in range(len(schedule)):
-        part = schedule[i].rpartition('/')[-1]
-        await message.answer_document(
-            open(f'pdfs/{part}.pdf', 'rb'),
-            caption=f'{schedule_name[i]}')
-        await asyncio.sleep(0.5)
+        if 'cloud.mail.ru' in schedule[i]:
+            part = schedule[i].rpartition('/')[-1]
+            await message.answer_document(
+                open(f'pdfs/{part}.pdf', 'rb'),
+                caption=f'{schedule_name[i]}')
+        else:
+            name = schedule[i].rpartition('/')[-1]
+            await message.answer_document(
+                open(f'pdfs/{name}', 'rb'),
+                caption=f'{schedule_name[i]}')
 
 
 # Обработчик команды "Изменения"
