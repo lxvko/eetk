@@ -106,7 +106,11 @@ async def spisok(message: types.Message):
         os.remove(file)
 
     # Скачиваем актуальные файлы изменений
-    collect_data_daily()
+    try:
+        collect_data_daily()
+        await message.answer('Загрузка изменений завершена 😊')
+    except:
+        await message.answer('Что-то сломалось с загрузкой изменений 😥')
     course = 1
     # Скачиваем актуальные файлы расписания для всех курсов
     for course in range(1, 5):
@@ -268,27 +272,30 @@ async def get_data_daily(message: types.Message):
 
     counter = -1
     for change in changes:
-        counter += 1
-        await asyncio.sleep(0.5)
-        # Отправляем файлы пользователю с интервалом пол секунды
-        if 'cloud.mail.ru' in change:
-            part = changes[counter].rpartition('/')[-1]
-            if temp_formats[counter] == 'pdf':
+        try:
+            counter += 1
+
+            # Отправляем файлы пользователю
+            if 'cloud.mail.ru' in change:
+                part = changes[counter].rpartition('/')[-1]
+                if temp_formats[counter] == 'pdf':
+                    await message.answer_document(
+                        open(f'pdfs/{part}.pdf', 'rb'),
+                        caption=f'{changes_names[counter]}')
+                elif temp_formats[counter] == 'jpg':
+                    await message.answer_document(
+                        open(f'pdfs/{part}.jpg', 'rb'),
+                        caption=f'{changes_names[counter]}')
+                elif temp_formats[counter] == 'png':
+                    await message.answer_document(
+                        open(f'pdfs/{part}.png', 'rb'),
+                        caption=f'{changes_names[counter]}')
+            else:
                 await message.answer_document(
-                    open(f'pdfs/{part}.pdf', 'rb'),
+                    open(f'pdfs/{changes_names[counter]}.pdf', 'rb'),
                     caption=f'{changes_names[counter]}')
-            elif temp_formats[counter] == 'jpg':
-                await message.answer_document(
-                    open(f'pdfs/{part}.jpg', 'rb'),
-                    caption=f'{changes_names[counter]}')
-            elif temp_formats[counter] == 'png':
-                await message.answer_document(
-                    open(f'pdfs/{part}.png', 'rb'),
-                    caption=f'{changes_names[counter]}')
-        else:
-            await message.answer_document(
-                open(f'pdfs/{changes_names[counter]}.pdf', 'rb'),
-                caption=f'{changes_names[counter]}')
+        except FileNotFoundError as e:
+            print(f'Файл не найден: {e}')
 
 
 # Обработчик секретной команды "Милый котик"

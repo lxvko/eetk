@@ -46,13 +46,17 @@ def collect_data_daily():
         for item in date_daily:
             print(item, file=file)
 
-    download_file(data_daily, date_daily)
+    download_file(data_daily)
 
 
 # Скачивание файлов для отправки в ТГ-бота (на вход подаются ссылки и имена)
-def download_file(ids, names):
+def download_file(ids):
     counter = -1
     temp_formats = []
+    names = []
+    with open("texts/changes_names.txt" , "r") as file:
+        for line in file:
+            names.append(line.strip())
     for id in ids:
         counter += 1
         # Если pdf-файл залит в cloud.mail.ru

@@ -52,12 +52,12 @@ def collect_result():
     while True:
         # Такие большие задержки нужны чтобы парсинг был 24/7 и чтобы сайт не запрещал доступ
 
-        time.sleep(40)
+        time.sleep(90)
 
         if collect_result_weekly() is False:
             continue
 
-        time.sleep(40)
+        time.sleep(90)
 
         if collect_result_daily() is False:
             continue
@@ -86,15 +86,15 @@ def collect_result_weekly():
             headers={'user-agent': f'{ua.random}'})
     except requests.ConnectionError as e:
         print(str(e))
-        time.sleep(60)
+        time.sleep(90)
         return False
     except requests.Timeout as e:
         print(str(e))
-        time.sleep(60)
+        time.sleep(90)
         return False
     except requests.RequestException as e:
         print(str(e))
-        time.sleep(60)
+        time.sleep(90)
         return False
     except KeyboardInterrupt:
         print("Something closed the program")
@@ -119,15 +119,15 @@ def collect_result_daily():
             headers={'user-agent': f'{ua.random}'})
     except requests.ConnectionError as e:
         print(str(e))
-        time.sleep(60)
+        time.sleep(90)
         return False
     except requests.Timeout as e:
         print(str(e))
-        time.sleep(60)
+        time.sleep(90)
         return False
     except requests.RequestException as e:
         print(str(e))
-        time.sleep(60)
+        time.sleep(90)
         return False
     except KeyboardInterrupt:
         print("Something closed the program")
