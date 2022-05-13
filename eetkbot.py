@@ -1,5 +1,6 @@
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
+import requests
 from collect_data_weekly import collect_data_weekly
 from collect_data_daily import collect_data_daily
 from collect_kitties import collect_kitty
@@ -165,7 +166,11 @@ async def get_data_weekly_first(message: types.Message):
     await message.answer('Загрузка. Подожди, пожалуйста 🙃')
 
     # Сохраняем pdf-файлы для первого курса
-    collect_data_weekly(1)
+    try:
+        collect_data_weekly(1)
+    except requests.exceptions.MissingSchema as e:
+        print('Что-то не так с 1 курсом')
+    
     # Открываем названия файлов и ссылки
     with open('texts/schedules.txt') as file:
         schedule = [line.strip() for line in file]
@@ -190,7 +195,11 @@ async def get_data_weekly_first(message: types.Message):
 async def get_data_weekly_second(message: types.Message):
     await message.answer('Загрузка. Подожди, пожалуйста 🙃')
 
-    collect_data_weekly(2)
+    try:
+        collect_data_weekly(2)
+    except requests.exceptions.MissingSchema as e:
+        print('Что-то не так с 2 курсом')
+    
     with open('texts/schedules.txt') as file:
         schedule = [line.strip() for line in file]
     with open('texts/schedules_names.txt') as file:
@@ -213,7 +222,11 @@ async def get_data_weekly_second(message: types.Message):
 async def get_data_weekly_third(message: types.Message):
     await message.answer('Загрузка. Подожди, пожалуйста 🙃')
 
-    collect_data_weekly(3)
+    try:
+        collect_data_weekly(3)
+    except requests.exceptions.MissingSchema as e:
+        print('Что-то не так с 3 курсом')
+    
     with open('texts/schedules.txt') as file:
         schedule = [line.strip() for line in file]
     with open('texts/schedules_names.txt') as file:
@@ -236,7 +249,11 @@ async def get_data_weekly_third(message: types.Message):
 async def get_data_weekly_fourth(message: types.Message):
     await message.answer('Загрузка. Подожди, пожалуйста 🙃')
 
-    collect_data_weekly(4)
+    try:
+        collect_data_weekly(4)
+    except requests.exceptions.MissingSchema as e:
+        print('Что-то не так с 4 курсом')
+        
     with open('texts/schedules.txt') as file:
         schedule = [line.strip() for line in file]
     with open('texts/schedules_names.txt') as file:

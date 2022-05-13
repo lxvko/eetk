@@ -29,7 +29,7 @@ def collect_data():
         headers={'user-agent': f'{ua.random}'})
 
     soup = BeautifulSoup(r.text, "lxml")
-    schedules = soup.find_all("tr", class_="row-4 even")
+    schedules = soup.find_all("tr", class_="row-2 even")
     for schedule in schedules:
         data_weekly += [link.get("href") for link in schedule.find_all("a")]
 
@@ -100,7 +100,7 @@ def collect_result_weekly():
         print("Something closed the program")
 
     soup = BeautifulSoup(r.text, "lxml")
-    schedules = soup.find_all("tr", class_="row-4 even")
+    schedules = soup.find_all("tr", class_="row-2 even")
     for schedule in schedules:
         result_weekly += [link.get("href") for link in schedule.find_all("a")]
     return True
