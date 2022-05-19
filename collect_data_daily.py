@@ -70,11 +70,11 @@ def download_file(ids):
                 temp = temp.text
 
                 # Магическим образом достаем формат будущего файла
-                magic_format = Format.parse_raw(temp.partition('"folders":')[2].partition('\n}')[0])
+                magic_format = Format.parse_raw(temp.partition('"serverSideFolders":')[2].partition(',"size"')[0] + '}')
                 temp_formats.append(magic_format.name.split('.')[-1])
 
                 # Магическим образом достаем ссылку для скачивания
-                magic_link = Link.parse_raw(temp.partition('"weblink_get": ')[2].partition(',\n\t\t"')[0])
+                magic_link = Link.parse_raw(temp.partition('"weblink_get":')[2].partition(',"weblink')[0])
                 pdf = requests.get(magic_link.url + f'/{part}')
 
                 # Если файл уже скачан, то еще раз он качаться не будет

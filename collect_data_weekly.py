@@ -80,7 +80,7 @@ def download_file(ids, names):
                 temp = temp.text
 
                 # Магическим образом достаем ссылку для скачивания
-                magic_link = Link.parse_raw(temp.partition('"weblink_get": ')[2].partition(',\n\t\t"')[0])
+                magic_link = Link.parse_raw(temp.partition('"weblink_get":')[2].partition(',"weblink')[0])
                 pdf = requests.get(magic_link.url + f'/{part}')
 
                 # Скачиваем нужный нам pdf-файл
